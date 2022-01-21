@@ -6,35 +6,31 @@ import sys
 sys.path.append('/Users/john/source/python_code/csv_to_LateX')
 import csv
 
+# input is the input file name
+def csvListReader (input):
+    with open(input, newline='') as f:
+        reader = csv.reader(f)
+        data = list(reader)
+    return data
+
 # define a function to trim extra commas
 def trimmer(input):
-   # output string
-    sOut = ""
-    # output list
-    lOut = []
-    # comma flag 
-    cFlag = 0
-    for elem in input:
-        s = ''.join(elem)
-        for c in s:
-            if c == ',' and cFlag == 1:
-                break
-            if c == ',':
-                cFlag = 1
-            else:
-                cFlag = 0
-            sOut = sOut + c
-        lOut.append(sOut[0:-1])
-        sOut = ""
-    return lOut
+    output = []
+    for rows in input:
+        rowOut = []
+        for col in rows:
+            if col != '': #: ) <3
+                rowOut.append(col)
+        output.append(rowOut)
+    return output
 
+# to be completed
 def numCols(input):
     count = 0
     for elem in input:
         s = ''.join(elem)
         for c in s:
             pass
-
 
 """
     Write LaTex style table
@@ -92,19 +88,11 @@ def csvToLaTex(input, file = 'output.txt', style = 1, mode = 'a'):
                 return
 
 
-
-
 # Globals
 # input list
-inputCSV = []
+inputCSV = csvListReader('Example_list1.csv')
 
-# read input into local inputCSV variable
-with open('Example_list1.csv', newline='') as csvfile:
-     file_reader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-     for row in file_reader:
-         inputCSV.append(row)
-lTrimmed = trimmer(inputCSV)
-
+# TESTS
 print('Output of original csv file: \n')
 for row in inputCSV:
     print(' '.join(row))
