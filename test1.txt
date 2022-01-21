@@ -1,0 +1,12 @@
+\begin{center}
+	\begin{tabular}{c c}
+	English & French\\
+	computer & ordinateur, m\\
+	happy & heureux/heureuse\\
+	leave & Partir\\
+	House\\
+	Parsley\\
+	Season\\
+	Independent\\
+	\end{tabular}
+\end{center}
