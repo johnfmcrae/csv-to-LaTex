@@ -1,9 +1,6 @@
 # convert a csv fil to a LaTex table
 
 # imports
-# specify current directory to make sure debugger works correctly
-import sys
-sys.path.append('/Users/john/source/python_code/csv_to_LateX')
 import csv
 
 # input is the input file name
@@ -48,10 +45,10 @@ def numCols(input):
     Style 1 - basic tabular with centering:
 
     \begin{center}
-    \begin{tabular}{c c}
-        cell A1 & cell B1 \\
-        cell A2 & cell B2
-    \end{tabular}
+        \begin{tabular}{c c}
+            cell A1 & cell B1 \\
+            cell A2 & cell B2
+        \end{tabular}
     \end{center}
 
     Style 2 - table with [h!] float specifier
@@ -75,10 +72,14 @@ def csvToLaTex(input, file = 'output.txt', style = 1, mode = 'a'):
         return
     else:
         with open(file, mode) as file:
-            # check style type
-            if style == 1:
+            # check valid style
+            if style != 1 and style != 2:
+                print('Error, not a valid table style')
+            else:
                 # start table
-                file.write('\\begin{center}\n\\begin{tabular}{')
+                if style == 2:
+                    file.write('\\begin{table}[h!]\n')
+                file.write('\\begin{center}\n\t\\begin{tabular}{')
                 for i in range(cols):
                     if i != cols - 1:
                         file.write('c ')
@@ -86,7 +87,7 @@ def csvToLaTex(input, file = 'output.txt', style = 1, mode = 'a'):
                         file.write('c}\n')
                 # add the contents
                 for rows in input:
-                    file.write('\t')
+                    file.write('\t\t')
                     for i in range(len(rows)):
                         if (i + 1) != len(rows):
                             file.write(f'{rows[i]} & ')
@@ -94,28 +95,5 @@ def csvToLaTex(input, file = 'output.txt', style = 1, mode = 'a'):
                             file.write(f'{rows[i]}\\\\\n')
                 # end the table
                 file.write('\t\\end{tabular}\n\\end{center}\n')
-            elif style == 2:
-                pass
-            else:
-                print('Error, not a valid table style')
-                return
-
-
-# Globals
-# input list
-inputCSV = csvListReader('Example_list1.csv')
-# trim extra columns
-inputCSV = trim(inputCSV)
-
-# TESTS
-print('Trimmed csv:')
-for row in inputCSV:
-    print(row)
-
-print(f'number of columns = {numCols(inputCSV)}')
-
-csvToLaTex(inputCSV, 'test1.txt', style=1, mode='w')
-
-# print('Output of trimmed csv file: \n')
-# for row in lTrimmed:
-#     print(row)
+                if style == 2:
+                    file.write('\\end{table}\n')
